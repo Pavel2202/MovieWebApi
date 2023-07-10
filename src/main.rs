@@ -2,6 +2,9 @@ use actix_web::{get, web, App, HttpServer};
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 
+mod movies;
+use movies::services;
+
 struct AppState {
     movies: Mutex<Vec<Movie>>
 }
@@ -27,6 +30,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
         .app_data(app_data.clone())
         .service(index)
+        .configure(services::config)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
